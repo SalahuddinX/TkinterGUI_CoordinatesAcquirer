@@ -1,6 +1,8 @@
 # imports
 import threading
 from tkinter import *
+import cv2
+from MissionPlanner_GUI.mission_planner_gui import MissionPlannerGUI
 import imageio
 from PIL import Image, ImageTk
 
@@ -10,7 +12,8 @@ video_name = r"D:\Datasets\Computer Vision\Rizwan_Old_Drone_Recorded\TrimedVideo
 video = imageio.get_reader(video_name)
 
 
-# Functions
+# ==== Functions ===== #
+# Video Streaming
 def stream(label):
     for image in video.iter_data():
         img = Image.fromarray(image)
@@ -28,13 +31,17 @@ if __name__ == "__main__":
     # set title
     root.title("Mission Planner")
     # Set minimum size for root window
-    root.geometry("650x400")
+    # root.geometry("650x400")
+    root.geometry("")
 
-    my_label = Label(root)
-    my_label.pack()
-    thread = threading.Thread(target=stream, args=(my_label,))
-    thread.daemon = 1
-    thread.start()
+    # Saved Video streaming to tkinter
+    # my_label = Label(root)
+    # my_label.pack()
+    # thread = threading.Thread(target=stream, args=(my_label,))
+    # thread.daemon = 1
+    # thread.start()
 
+    # MissionPlanner IInitialization
+    MissionPlannerGUI(root, cv2.VideoCapture(0))
     # Main event loop of root window
     root.mainloop()
