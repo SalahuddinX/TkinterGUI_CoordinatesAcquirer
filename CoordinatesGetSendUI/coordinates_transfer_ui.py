@@ -1,10 +1,10 @@
 import tkinter as tk
 from tkinter import CENTER
-from PIL import Image, ImageTk
+from PIL import Image, ImageTk, ImageDraw
 import cv2
 
 
-class MissionPlannerGUI:
+class CoordinatesTransferGUI:
     def __init__(self, window, cap):
         self.image = None
         self.window = window
@@ -64,11 +64,25 @@ class MissionPlannerGUI:
         # Update image on canvas
         self.update_image()
 
+    def add_corners(self, im, rad):
+        circle = Image.new('L', (rad * 2, rad * 2), 0)
+        draw = ImageDraw.Draw(circle)
+        draw.ellipse((0, 0, rad * 2, rad * 2), fill=255)
+        alpha = Image.new('L', im.size, 255)
+        w, h = im.size
+        alpha.paste(circle.crop((0, 0, rad, rad)), (0, 0))
+        alpha.paste(circle.crop((0, rad, rad, rad * 2)), (0, h - rad))
+        alpha.paste(circle.crop((rad, 0, rad * 2, rad)), (w - rad, 0))
+        alpha.paste(circle.crop((rad, rad, rad * 2, rad * 2)), (w - rad, h - rad))
+        im.putalpha(alpha)
+        return im
+
     def update_image(self):
         # Get the latest frame and convert image format
         self.image = cv2.cvtColor(self.cap.read()[1], cv2.COLOR_BGR2RGB)  # to RGB
         self.image = Image.fromarray(self.image)  # to PIL format
         self.image = self.image.resize((self.width, self.height))
+        self.image = self.add_corners(self.image, 50)
         self.image = ImageTk.PhotoImage(self.image)  # to ImageTk format
 
         # Update image

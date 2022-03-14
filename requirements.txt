@@ -4,3 +4,4 @@ setuptools==60.9.3
 wheel==0.37.1
 imageio~=2.16.1
 opencv-python~=4.5.2.54
+PyQt5~=5.15.6

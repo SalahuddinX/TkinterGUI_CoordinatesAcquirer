@@ -2,7 +2,7 @@
 import threading
 from tkinter import *
 import cv2
-from MissionPlanner_GUI.mission_planner_gui import MissionPlannerGUI
+from CoordinatesGetSendUI.coordinates_transfer_ui import CoordinatesTransferGUI
 import imageio
 from PIL import Image, ImageTk
 
@@ -42,6 +42,6 @@ if __name__ == "__main__":
     # thread.start()
 
     # MissionPlanner IInitialization
-    MissionPlannerGUI(root, cv2.VideoCapture(0))
+    CoordinatesTransferGUI(root, cv2.VideoCapture(0))
     # Main event loop of root window
     root.mainloop()
